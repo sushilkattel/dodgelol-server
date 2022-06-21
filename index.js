@@ -5,7 +5,7 @@ const cache = require("memory-cache");
 const PORT = process.env.PORT || 3080;
 
 const app = express();
-const apiKey = 'RGAPI-dda7b5d2-2104-48c0-b1e1-55755912e18c';
+const apiKey = '';
 
 app.get("/api", function (req, res) {
     const user = req.query.user
