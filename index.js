@@ -6,6 +6,15 @@ const PORT = process.env.PORT || 3080;
 
 const app = express();
 const apiKey = '';
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+app.use(express.static('public')); 
+app.use('/images', express.static('images'));
+
+//https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0&api_key=RGAPI-edbc2038-07d3-442d-bfb0-a26f2cb0b977
 
 app.get("/api", function (req, res) {
     const user = req.query.user
@@ -71,6 +80,13 @@ app.get("/summonerMatchlistQuery", async function (req, res) {
     const url = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${id}/ids?start=0&count=10`;
     let resp = await customFetch(url)
     res.send(resp)
+})
+//Valorant Leaderboard Query
+app.get("/valorantLeaderboard", async function (req, res) {
+  res.header("Accesss-Control-Allow-Origin", "*");
+  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0`;
+  let resp = await customFetch(url)
+  res.send(resp)
 })
 
 app.listen(PORT, () => {
