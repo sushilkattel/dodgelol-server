@@ -1,13 +1,21 @@
 const axios = require("axios");
 const express = require("express");
 const cache = require("memory-cache");
+var metlo = require("metlo")
+require("dotenv").config();
 
 const PORT = process.env.PORT || 3080;
 
+//setup metlo
+metlo(process.env.METLO_API_KEY, "https://app.metlo.com:8081");
+
 const app = express();
-const apiKey = '';
+//Create .env file and set RIOT_API_KEY and METLO_API_KEY
+
+const apiKey = process.env.RIOT_API_KEY;
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Private-Network', '*');
   next();
 });
 
