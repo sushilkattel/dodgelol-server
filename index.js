@@ -22,8 +22,6 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
 
-//https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0&api_key=RGAPI-edbc2038-07d3-442d-bfb0-a26f2cb0b977
-
 app.get("/api", function (req, res) {
     const user = req.query.user
     res.json({ message: "User: ", user });
@@ -50,7 +48,7 @@ app.get("/api", function (req, res) {
             }
             return null
           } catch(e) {
-            return null
+            return 
           }
 
     }
@@ -96,6 +94,42 @@ app.get("/valorantLeaderboard", async function (req, res) {
   let resp = await customFetch(url)
   res.send(resp)
 })
+// BEGIN OF VALORANT API CALLS
+//Fetch for valorant calls
+async function customFetch(url) {
+  const cachedResponse = cache.get(url);
+  const hours = 24;
+  if(cachedResponse) {
+      console.log("RAN VAL CACHE")
+      return cachedResponse
+  }
+  else {
+    axios.get(`${url}`, {
+      params: {
+        api_key: process.env.RIOT_VAL_KEY
+      }
+    }).then(response => {
+      // Extract the data you need from the response and send it back to the client
+      res.status(200).send({
+        puuid: response.data.puuid,
+      });
+    }).catch(error => {
+      // Handle any errors that may occur during the API call
+      console.error(error);
+      res.status(500).send({
+        error: 'Error calling the Riot API'
+      });
+    });
+  }
+}
+
+app.get("/valorant-user", async function (req, res){
+  res.header("Accesss-Control-Allow-Origin", "*");
+  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0`;
+  let resp = await customFetch(url)
+  res.send(resp)
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
