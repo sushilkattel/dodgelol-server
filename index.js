@@ -1,17 +1,17 @@
+require("dotenv").config();
+var metlo = require("metlo")
+metlo(process.env.METLO_API_KEY, "https://app.metlo.com:8081");
 const axios = require("axios");
 const express = require("express");
 const cache = require("memory-cache");
-var metlo = require("metlo")
-require("dotenv").config();
 
 const PORT = process.env.PORT || 3080;
 
 //setup metlo
-metlo(process.env.METLO_API_KEY, "https://app.metlo.com:8081");
 
 const app = express();
 //Create .env file and set RIOT_API_KEY and METLO_API_KEY
-
+console.log("API METLO: " + process.env.METLO_API_KEY)
 const apiKey = process.env.RIOT_API_KEY;
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('public')); 
+app.use(express.static('public'));
 app.use('/images', express.static('images'));
 
 //https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0&api_key=RGAPI-edbc2038-07d3-442d-bfb0-a26f2cb0b977
@@ -52,7 +52,7 @@ app.get("/api", function (req, res) {
           } catch(e) {
             return null
           }
-    
+
     }
   }
 //Summoner Data Query
@@ -71,7 +71,7 @@ app.get("/summonerRankedQuery", async function (req, res) {
     const url = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`;
     let resp = await customFetch(url)
     res.send(resp)
-    
+
 });
 //Game Query
 app.get("/summonerGameQuery", async function (req, res) {
