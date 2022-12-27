@@ -98,7 +98,7 @@ app.get("/summonerMatchlistQuery", async function (req, res) {
 //Valorant Leaderboard Query
 app.get("/valorantLeaderboard", async function (req, res) {
   res.header("Accesss-Control-Allow-Origin", "*");
-  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=200&startIndex=0&api_key=RGAPI-73b85501-256f-4750-ab7c-892752fa14ae`;
+  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=200&startIndex=0`;
   let resp = await customFetch(url)
   res.send(resp)
 })
