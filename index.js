@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3080;
 
 const app = express();
 //Create .env file and set RIOT_API_KEY and METLO_API_KEY
-console.log("API METLO: " + process.env.METLO_API_KEY)
+
 const apiKey = process.env.RIOT_API_KEY;
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -64,9 +64,9 @@ app.get("/api", function (req, res) {
 app.get("/summonerDataQuery", async function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     const summonerName = req.query.user;
-    console.log(summonerName)
     const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`;
     let resp = await customFetch(url);
+    console.log(resp);
     res.send(resp)
 });
 //Summoner Ranked Query
@@ -92,12 +92,13 @@ app.get("/summonerMatchlistQuery", async function (req, res) {
     const id = req.query.user;
     const url = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${id}/ids?start=0&count=10`;
     let resp = await customFetch(url)
+    console.log(resp);
     res.send(resp)
 })
 //Valorant Leaderboard Query
 app.get("/valorantLeaderboard", async function (req, res) {
   res.header("Accesss-Control-Allow-Origin", "*");
-  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=100&startIndex=0`;
+  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=200&startIndex=0&api_key=RGAPI-73b85501-256f-4750-ab7c-892752fa14ae`;
   let resp = await customFetch(url)
   res.send(resp)
 })
@@ -105,6 +106,7 @@ app.get("/valorantLeaderboard", async function (req, res) {
 
 // BEGIN OF VALORANT API CALLS
 //Fetch for valorant calls
+/*
 async function customFetch(url) {
   const cachedResponse = cache.get(url);
   const hours = 24;
@@ -113,19 +115,19 @@ async function customFetch(url) {
       return cachedResponse
   }
   else {
-    axios.get(`${url}`, {
+      resp = axios.get(`${url}`, {
       params: {
         api_key: process.env.RIOT_VAL_KEY
       }
     }).then(response => {
       // Extract the data you need from the response and send it back to the client
-      res.status(200).send({
+      resp.status(200).send({
         puuid: response.data.puuid,
       });
     }).catch(error => {
       // Handle any errors that may occur during the API call
       console.error(error);
-      res.status(500).send({
+      resp.status(500).send({
         error: 'Error calling the Riot API'
       });
     });
@@ -138,7 +140,7 @@ app.get("/valorant-user", async function (req, res){
   let resp = await customFetch(url)
   res.send(resp)
 })
-
+*/
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
