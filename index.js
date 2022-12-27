@@ -53,6 +53,13 @@ app.get("/api", function (req, res) {
 
     }
   }
+
+
+//RIOT OAUTH SIGN CALLBACK
+//TODO
+
+
+//LEAGUE OF LEGENDS
 //Summoner Data Query
 app.get("/summonerDataQuery", async function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -90,10 +97,12 @@ app.get("/summonerMatchlistQuery", async function (req, res) {
 //Valorant Leaderboard Query
 app.get("/valorantLeaderboard", async function (req, res) {
   res.header("Accesss-Control-Allow-Origin", "*");
-  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/67e373c7-48f7-b422-641b-079ace30b427?size=100&startIndex=0`;
+  const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=100&startIndex=0`;
   let resp = await customFetch(url)
   res.send(resp)
 })
+
+
 // BEGIN OF VALORANT API CALLS
 //Fetch for valorant calls
 async function customFetch(url) {
