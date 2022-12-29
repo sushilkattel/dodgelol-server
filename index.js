@@ -13,6 +13,8 @@ const app = express();
 //Create .env file and set RIOT_API_KEY and METLO_API_KEY
 
 const apiKey = process.env.RIOT_API_KEY;
+const riotKey = process.env.RIOT_VAL_KEY;
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Private-Network', '*');
@@ -48,7 +50,7 @@ app.get("/api", function (req, res) {
             }
             return null
           } catch(e) {
-            return 
+            return e
           }
 
     }
@@ -95,11 +97,42 @@ app.get("/summonerMatchlistQuery", async function (req, res) {
     console.log(resp);
     res.send(resp)
 })
+
+
+//VALORANT Custom Fetch
+async function customValFetch(url) {
+  const cachedResponse = cache.get(url);
+  const hours = 24;
+  if(cachedResponse) {
+      console.log("RAN CACHE")
+      return cachedResponse
+  }
+  else {
+      try {
+          let resp = await axios.get(url, {
+            params: {
+              api_key: riotKey,
+            }
+          });
+          if (resp.status === 200 && resp.data) {
+            cache.put(url, resp.data, hours * 1000 * 60 * 60);
+            console.log("RAN CALL")
+            return resp.data
+          }
+          return null
+        } catch(e) {
+          return e
+        }
+
+  }
+}
+
+
 //Valorant Leaderboard Query
 app.get("/valorantLeaderboard", async function (req, res) {
   res.header("Accesss-Control-Allow-Origin", "*");
   const url = `https://na.api.riotgames.com/val/ranked/v1/leaderboards/by-act/aca29595-40e4-01f5-3f35-b1b3d304c96e?size=200&startIndex=0`;
-  let resp = await customFetch(url)
+  let resp = await customValFetch(url)
   res.send(resp)
 })
 
