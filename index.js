@@ -1,5 +1,5 @@
 require("dotenv").config();
-var metlo = require("metlo")
+var metlo = require("metlo").default
 metlo(process.env.METLO_API_KEY, "https://app.metlo.com:8081");
 const axios = require("axios");
 const express = require("express");
