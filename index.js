@@ -83,6 +83,7 @@ async function summonerRefresh(summoner) {
 app.get("/summoner-refresh", async function (req, res){
   const summonerName = req.query.user;
   summonerRefresh(summonerName)
+  res.sendStatus(200)
 })
 
 //LEAGUE OF LEGENDS
