@@ -74,8 +74,8 @@ async function summonerRefresh(summoner) {
       console.log("RAN REFRESH")
       id = resp.data.puuid;
     }
-    cache.remove(url);
-    cache.remove(matchList);
+    cache.del(url);
+    cache.del(matchList);
     console.log("REFRESH COMPLETE")
   }
 
