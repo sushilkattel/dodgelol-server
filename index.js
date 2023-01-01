@@ -60,6 +60,30 @@ app.get("/api", function (req, res) {
 //RIOT OAUTH SIGN CALLBACK
 //TODO
 
+//REFRESH DATA
+async function summonerRefresh(summoner) {
+  const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}`;
+  var id = 0;
+  const matchList = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${id}/ids?start=0&count=10`;
+  let resp = await axios.get(url, {
+    params: {
+      api_key: apiKey,
+    }
+    });
+    if (resp.status === 200 && resp.data) {
+      console.log("RAN REFRESH")
+      id = resp.data.puuid;
+    }
+    cache.remove(url);
+    cache.remove(matchList);
+    console.log("REFRESH COMPLETE")
+  }
+
+
+app.get("/summoner-refresh", async function (req, res){
+  const summonerName = req.query.user;
+  summonerRefresh(summonerName)
+})
 
 //LEAGUE OF LEGENDS
 //Summoner Data Query
